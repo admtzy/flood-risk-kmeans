@@ -1,29 +1,25 @@
+import cv2
 import os
-import pandas as pd
-from sklearn.preprocessing import StandardScaler
+import numpy as np
 
-def load_data(filename):
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_dir, "..", "data", filename)
-    print("Loading dataset:", os.path.abspath(file_path))
-    return pd.read_csv(file_path)
+def load_images(folder):
+    images = []
+    labels = []
 
-def preprocess_data(df):
-    features = [
-        "Rainfall",
-        "Humidity9am",
-        "Humidity3pm",
-        "Temp9am",
-        "Temp3pm",
-        "WindSpeed9am",
-        "WindSpeed3pm",
-        "Pressure9am",
-        "Pressure3pm"
-    ]
+    for label_name in os.listdir(folder):
+        label_folder = os.path.join(folder, label_name)
 
-    df_clean = df[features].dropna()
+        if not os.path.isdir(label_folder):
+            continue
 
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(df_clean)
+        for img_name in os.listdir(label_folder):
+            img_path = os.path.join(label_folder, img_name)
 
-    return X_scaled, df_clean, scaler
+            img = cv2.imread(img_path)
+            img = cv2.resize(img, (128, 128))
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+            images.append(img)
+            labels.append(label_name)
+
+    return np.array(images), np.array(labels)
