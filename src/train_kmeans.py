@@ -10,11 +10,10 @@ DATASET_PATH = "data/rice_leaf_diseases"
 print("Loading images...")
 X, y = load_images(DATASET_PATH)
 
-# Ekstrak HOG Feature
 features = []
 for img in X:
     fd = hog(img, orientations=9, pixels_per_cell=(8,8), 
-             cells_per_block=(2,2), channel_axis=-1)
+            cells_per_block=(2,2), channel_axis=-1)
     features.append(fd)
 
 print("Splitting...")
@@ -26,7 +25,6 @@ print("Training SVM...")
 model = SVC(kernel='linear')
 model.fit(X_train, y_train)
 
-# 🔥 Tambahin akurasi di sini
 accuracy = model.score(X_test, y_test) * 100
 print(f"Accuracy: {accuracy:.2f}%")
 
