@@ -1,0 +1,205 @@
+/* Color Palette - Tema Hijau Pertanian */
+:root {
+    --primary-green: #2d7a3e;
+    --secondary-green: #47a35a;
+    --light-green: #6bc47d;
+    --accent-green: #8fd99f;
+    --dark-gray: #2d3748;
+    --medium-gray: #4a5568;
+    --light-gray: #718096;
+    --bg-light: #f7fafc;
+    --bg-white: #ffffff;
+    --border-color: #e2e8f0;
+    --success-green: #38a169;
+    --warning-yellow: #d69e2e;
+}
+
+/* Main Header */
+.main-header {
+    text-align: center;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+/* Button Styling */
+.stButton>button {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stButton>button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(45, 122, 62, 0.4);
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--light-green) 100%);
+}
+
+/* Result Cards */
+.result-card {
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.success-card {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: white;
+}
+
+.warning-card {
+    background: linear-gradient(135deg, var(--warning-yellow) 0%, #ed8936 100%);
+    color: white;
+}
+
+/* Info Box */
+.info-box {
+    background: var(--bg-light);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-green);
+    margin: 1rem 0;
+    color: var(--dark-gray);
+}
+
+.info-box strong {
+    color: var(--primary-green);
+}
+
+.info-box code {
+    background: var(--border-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--dark-gray);
+    font-weight: 600;
+}
+
+/* Metric Cards */
+.metric-card {
+    background: var(--bg-white);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    margin: 0.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-green);
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--medium-gray);
+    margin-top: 0.5rem;
+}
+
+/* Hover Effects */
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(45, 122, 62, 0.15);
+    border-color: var(--secondary-green);
+}
+
+/* Streamlit Default Override */
+.stProgress > div > div > div > div {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+}
+
+/* File Uploader Custom */
+.stFileUploader {
+    border: 2px dashed var(--secondary-green);
+    border-radius: 8px;
+    padding: 1rem;
+    background: var(--bg-light);
+}
+
+/* Camera Input Custom */
+section[data-testid="stCameraInput"] {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+}
+
+/* Typography */
+h1, h2, h3 {
+    color: var(--dark-gray);
+}
+
+/* Success/Info Messages */
+.stSuccess {
+    background-color: #f0fdf4;
+    border-left: 4px solid var(--success-green);
+}
+
+.stInfo {
+    background-color: var(--bg-light);
+    border-left: 4px solid var(--secondary-green);
+}
+
+.stWarning {
+    background-color: #fffbeb;
+    border-left: 4px solid var(--warning-yellow);
+}
+
+/* Divider */
+hr {
+    border-color: var(--border-color);
+}
+
+/* Links */
+a {
+    color: var(--secondary-green);
+}
+
+a:hover {
+    color: var(--primary-green);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 1.5rem 0;
+    }
+    
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .result-card h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    .metric-card {
+        padding: 1rem;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+    }
+}
+
+/* Smooth Transitions */
+* {
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Focus States */
+button:focus,
+input:focus {
+    outline: 2px solid var(--secondary-green);
+    outline-offset: 2px;
+}
