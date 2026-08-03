@@ -19,9 +19,6 @@ os.makedirs(CAPTURE_DIR, exist_ok=True)
 os.makedirs("models", exist_ok=True)
 os.makedirs("results", exist_ok=True)
 
-# ================================
-# LOAD CSS (perbaikan duplikat)
-# ================================
 def load_css(file_path):
     if os.path.exists(file_path):
         with open(file_path) as f:
@@ -33,12 +30,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Load tema CSS jika ada
 load_css("apps/style.css")
 
-# ================================
-# HEADER
-# ================================
 st.markdown("""
 <div class="main-header">
     <h1>🌾 Deteksi Penyakit Daun Padi</h1>
@@ -46,9 +39,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ================================
-# LOAD MODEL (aman)
-# ================================
 @st.cache_resource(show_spinner=False)
 def load_model(path):
     if not os.path.exists(path):
@@ -64,13 +54,9 @@ if model is None:
 
 st.success("Model berhasil dimuat!")
 
-# ================================
-# PREPROCESSING HOG
-# ================================
 def preprocess_image_to_hog(pil_img: Image.Image):
     img = np.array(pil_img)
 
-    # Jika ada channel alpha → ubah ke 3 channel
     if img.ndim == 3 and img.shape[2] == 4:
         img = img[..., :3]
 
@@ -87,16 +73,10 @@ def preprocess_image_to_hog(pil_img: Image.Image):
     )
     return fd
 
-# ================================
-# SOFTMAX (fallback)
-# ================================
 def softmax(x):
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum(axis=0)
 
-# ================================
-# CHART CONFIDENCE
-# ================================
 def create_confidence_chart(classes, probs):
     colors = ['#667eea' if p == max(probs) else '#a8b3cf' for p in probs]
 
@@ -125,9 +105,6 @@ def create_confidence_chart(classes, probs):
 
     return fig
 
-# ================================
-# ANTARMUKA
-# ================================
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -151,9 +128,6 @@ predict_col1, predict_col2, predict_col3 = st.columns([1, 2, 1])
 with predict_col2:
     predict_button = st.button("PREDICT", use_container_width=True)
 
-# ================================
-# PREDIKSI
-# ================================
 if predict_button:
     pil_img = None
 
@@ -165,13 +139,11 @@ if predict_button:
         st.warning("Belum ada gambar.")
         st.stop()
 
-    # Tampilkan gambar input
     with col1:
         st.markdown("#### 🖼️ Gambar Input")
         st.image(pil_img, use_column_width=True)
 
     with col2:
-        # PROGRESS BAR
         progress_bar = st.progress(0)
         status_text = st.empty()
 
@@ -179,28 +151,22 @@ if predict_button:
         progress_bar.progress(20)
         time.sleep(0.3)
 
-        # Simpan
         timestamp = int(time.time())
         save_path = os.path.join(CAPTURE_DIR, f"capture_{timestamp}.jpg")
         if pil_img.mode in ("RGBA", "P"):
             pil_img = pil_img.convert("RGB")
         pil_img.save(save_path)
 
-        # HOG
         status_text.text("Ekstraksi fitur HOG...")
         progress_bar.progress(40)
         time.sleep(0.3)
 
         feat = preprocess_image_to_hog(pil_img).reshape(1, -1)
-
-        # Prediksi
+        
         status_text.text("Melakukan prediksi...")
         progress_bar.progress(70)
         time.sleep(0.3)
 
-        # ==============================
-        # SUPPORT TRAINED MODEL
-        # ==============================
         if hasattr(model, "predict_proba"):
             probs_all = model.predict_proba(feat)[0]
             idx = np.argmax(probs_all)
@@ -214,16 +180,12 @@ if predict_button:
             label = model.classes_[idx]
             confidence = probs_all[idx] * 100
 
-        # FINISH
         progress_bar.progress(100)
         time.sleep(0.5)
 
         progress_bar.empty()
         status_text.empty()
 
-        # ==============================
-        # TAMPILKAN HASIL
-        # ==============================
         with result_placeholder.container():
             color_class = "success-card" if confidence >= 70 else "warning-card"
             st.markdown(f"""
@@ -234,7 +196,6 @@ if predict_button:
             </div>
             """, unsafe_allow_html=True)
 
-            # METRIC
             c1, c2, c3 = st.columns(3)
 
             with c1:
@@ -263,13 +224,11 @@ if predict_button:
                 </div>
                 """, unsafe_allow_html=True)
 
-            # Grafik probabilitas
             st.markdown("---")
             st.markdown("Detail Confidence Score")
             fig = create_confidence_chart(list(model.classes_), probs_all)
             st.plotly_chart(fig, use_container_width=True)
 
-# FOOTER
 st.markdown("---")
 st.markdown("""
 <div class="info-box">
